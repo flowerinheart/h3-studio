@@ -27,7 +27,7 @@
 ```sh
 sudo apt-get update
 sudo apt-get install -y python3-venv python3-dev python3-pip ffmpeg git curl build-essential
-git clone https://github.com/hma_amdeng/h3-studio.git
+git clone https://github.com/flowerinheart/h3-studio.git
 cd h3-studio
 # 可选。不设的话外部文件放在仓库下的 external/，该目录被 git 忽略。
 export H3_EXTERNAL=$HOME/h3-external
@@ -41,7 +41,7 @@ bash deploy/start.sh
 
 ```sh
 export H3_EXTERNAL=$HOME/h3-external
-external/venv/bin/python deploy/smoke.py
+"$H3_EXTERNAL/venv/bin/python" deploy/smoke.py
 ```
 
 成功时打印 `VIDEO_OK` 和 `PROMPT_OK`。成片在 `$H3_EXTERNAL/outputs/h3-webui/videos/`。
