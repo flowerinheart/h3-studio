@@ -29,8 +29,11 @@ REGEN_COMMIT="${REGEN_COMMIT:-9b686c5ffd380e9d1351f9b8beef6d20d703ca3e}"
 log() { printf '== %s\n' "$*"; }
 
 pip_install() {
+  # Tsinghua first. Packages missing from that mirror fall through to PyPI.
   "$VENV/bin/python" -m pip install --retries 8 --timeout 120 \
-    -i "$PIP_INDEX" --trusted-host "$PIP_HOST" "$@"
+    -i "$PIP_INDEX" --extra-index-url https://pypi.org/simple \
+    --trusted-host "$PIP_HOST" --trusted-host pypi.org --trusted-host files.pythonhosted.org \
+    "$@"
 }
 
 clone_pin() {
