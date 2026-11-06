@@ -111,8 +111,10 @@ PY
   local ok=0
   for index in "${indexes[@]}"; do
     log "安装 torch，索引 $index"
+    # Do not add a generic PyPI extra index here. It can select a newer torch
+    # build that is not the CUDA/ROCm wheel from $index.
     if "$VENV/bin/python" -m pip install --retries 5 --timeout 180 \
-        --index-url "$index" --extra-index-url "$PIP_INDEX" \
+        --index-url "$index" \
         --trusted-host "$PIP_HOST" --trusted-host download.pytorch.org \
         --trusted-host mirrors.aliyun.com --trusted-host mirrors.cloud.tencent.com \
         'torch' 'torchvision'; then
