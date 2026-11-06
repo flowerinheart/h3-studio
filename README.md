@@ -35,7 +35,7 @@ bash deploy/build.sh
 bash deploy/start.sh
 ```
 
-`start.sh` 监听 `127.0.0.1:8188`。WebUI 在 `http://127.0.0.1:8188/simple-swap/`。
+`start.sh` 默认监听 `0.0.0.0:8188`。WebUI 在 `http://<主机>:8188/simple-swap/`。只本机访问时设 `H3_LISTEN=127.0.0.1`。
 
 另一台终端提交一条现有的 BF16 底稿（384 短边，约 1 秒，不用加速 LoRA）：
 
