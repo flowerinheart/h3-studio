@@ -1,0 +1,7 @@
+external/
+.venv/
+__pycache__/
+*.pyc
+*.safetensors
+*.so
+.DS_Store

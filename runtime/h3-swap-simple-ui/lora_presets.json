@@ -1,0 +1,60 @@
+{
+  "h3-realism-people-t2v-i2v-r2v.safetensors": {
+    "label": "Realism People · 真人肤质与表情",
+    "modes": [
+      "face",
+      "character",
+      "flex_character",
+      "quality_character",
+      "draft",
+      "refine"
+    ],
+    "default_strength": 0.5,
+    "trigger": "r34l1sm",
+    "hint": "已接线；可能推近镜头、偏红或改变脸部。2K叠加仍需画质验收。"
+  },
+  "h3_bunny_motion_repair_v2.safetensors": {
+    "label": "BUNNY Motion Repair V2 · 动作连续性",
+    "modes": [
+      "draft",
+      "flex_character",
+      "quality_character"
+    ],
+    "default_strength": 0.5,
+    "trigger": "bunny_crisp_motion",
+    "hint": "用于动作断链和肢体协调，不是手指精确控制。生成可从0.9测试；换人先用0.5，高强度可能改变原动作和声音。"
+  },
+  "h3_spatial_physics_clean_3000_pruned.safetensors": {
+    "label": "Spatial & Physics · 物体碰撞与重力",
+    "modes": [
+      "draft"
+    ],
+    "default_strength": 0.3,
+    "trigger": "",
+    "hint": "针对物体物理；需描述碰撞、重力和运动轨迹。不是人体手脚修复。"
+  },
+  "h3_camera_motion_v1_3000_pruned.safetensors": {
+    "label": "Camera Motion · 推拉跟拍与运镜",
+    "modes": [
+      "face",
+      "character",
+      "flex_character",
+      "quality_character",
+      "draft",
+      "refine"
+    ],
+    "default_strength": 0.8,
+    "trigger": "camera motion",
+    "hint": "在提示词中描述具体运镜。会改变镜头，不用于保持原片机位的替换或精修。"
+  },
+  "minimax_h3_motion_transfer_v1.0_ref2va.safetensors": {
+    "label": "Motion Transfer · 原有实验适配器",
+    "modes": [
+      "flex_character",
+      "quality_character"
+    ],
+    "default_strength": 0.5,
+    "trigger": "motion_transfer:",
+    "hint": "已有权重；配套引导尚未完整验收，可能重新解释动作与场景。"
+  }
+}

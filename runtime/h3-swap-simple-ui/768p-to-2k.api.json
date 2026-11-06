@@ -1,0 +1,361 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "minimax_h3_fl2va_pruned_bf16.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_bf16.safetensors",
+      "type": "minimax",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "MiniMaxH3ImageToVideo",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "A red fox trots through fresh snow ...",
+      "width": 1344,
+      "height": 768,
+      "length": 124
+    }
+  },
+  "6": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 42
+    }
+  },
+  "7": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "8": {
+    "class_type": "BasicScheduler",
+    "inputs": {
+      "model": [
+        "32",
+        0
+      ],
+      "scheduler": "simple",
+      "steps": 8,
+      "denoise": 1.0
+    }
+  },
+  "9": {
+    "class_type": "BasicGuider",
+    "inputs": {
+      "model": [
+        "32",
+        0
+      ],
+      "conditioning": [
+        "5",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "6",
+        0
+      ],
+      "guider": [
+        "9",
+        0
+      ],
+      "sampler": [
+        "7",
+        0
+      ],
+      "sigmas": [
+        "8",
+        0
+      ],
+      "latent_image": [
+        "5",
+        1
+      ]
+    }
+  },
+  "11": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "10",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "VAEDecodeAudio",
+    "inputs": {
+      "samples": [
+        "10",
+        0
+      ],
+      "vae": [
+        "4",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "OpenH3RegenFinish",
+    "inputs": {
+      "images": [
+        "11",
+        0
+      ],
+      "frame_count": 121,
+      "crop": "auto (1088 -> 1080, 2176 -> 2160)",
+      "audio": [
+        "12",
+        0
+      ]
+    }
+  },
+  "14": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "13",
+        0
+      ],
+      "fps": 24.0,
+      "audio": [
+        "13",
+        1
+      ]
+    }
+  },
+  "15": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "14",
+        0
+      ],
+      "filename_prefix": "fox_768p_draft",
+      "format": "mp4",
+      "format.codec": "h264"
+    }
+  },
+  "16": {
+    "class_type": "OpenH3SaveRefinedLatent",
+    "inputs": {
+      "samples": [
+        "10",
+        0
+      ],
+      "frame_count": 121,
+      "filename_prefix": "fox_768p_draft_latent"
+    }
+  },
+  "20": {
+    "class_type": "OpenH3RegenUpscale",
+    "inputs": {
+      "latent": [
+        "10",
+        0
+      ],
+      "model_name": "minimax_h3_latent_upscaler_3d_conv_v1_bf16.safetensors",
+      "resolution": "2k (2560x1440)",
+      "precision": "bf16",
+      "temporal_chunking": false
+    }
+  },
+  "21": {
+    "class_type": "OpenH3RegenRefineLatent",
+    "inputs": {
+      "latent": [
+        "20",
+        0
+      ],
+      "audio_mode": "silence (reference)",
+      "audio_vae": [
+        "4",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "OpenH3RegenLora",
+    "inputs": {
+      "model": [
+        "32",
+        0
+      ],
+      "lora_name": "open_h3_regenerate_2k_lora.safetensors",
+      "curve_name": "sharp_curve_branches.safetensors",
+      "curve_table": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "strength": 1.0,
+      "curve_strength": 1.0,
+      "lora_dtype": "bf16"
+    }
+  },
+  "23": {
+    "class_type": "OpenH3RegenSigmas",
+    "inputs": {
+      "steps": 3,
+      "start_sigma": 0.0
+    }
+  },
+  "24": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1766580932
+    }
+  },
+  "25": {
+    "class_type": "BasicGuider",
+    "inputs": {
+      "model": [
+        "22",
+        0
+      ],
+      "conditioning": [
+        "5",
+        0
+      ]
+    }
+  },
+  "26": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "24",
+        0
+      ],
+      "guider": [
+        "25",
+        0
+      ],
+      "sampler": [
+        "7",
+        0
+      ],
+      "sigmas": [
+        "23",
+        0
+      ],
+      "latent_image": [
+        "21",
+        0
+      ]
+    }
+  },
+  "27": {
+    "class_type": "OpenH3SaveRefinedLatent",
+    "inputs": {
+      "samples": [
+        "26",
+        0
+      ],
+      "frame_count": 121,
+      "filename_prefix": "fox_768p",
+      "audio": [
+        "13",
+        1
+      ]
+    }
+  },
+  "28": {
+    "class_type": "VAEDecodeTiled",
+    "inputs": {
+      "samples": [
+        "27",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 64,
+      "temporal_overlap": 8
+    }
+  },
+  "29": {
+    "class_type": "OpenH3RegenFinish",
+    "inputs": {
+      "images": [
+        "28",
+        0
+      ],
+      "frame_count": 121,
+      "crop": "auto (1088 -> 1080, 2176 -> 2160)",
+      "audio": [
+        "13",
+        1
+      ]
+    }
+  },
+  "30": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "29",
+        0
+      ],
+      "fps": 24.0,
+      "audio": [
+        "29",
+        1
+      ]
+    }
+  },
+  "31": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "30",
+        0
+      ],
+      "filename_prefix": "fox_768p_2k",
+      "format": "mp4",
+      "format.codec": "h264"
+    }
+  },
+  "32": {
+    "class_type": "H3CKAttention",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ]
+    }
+  }
+}
